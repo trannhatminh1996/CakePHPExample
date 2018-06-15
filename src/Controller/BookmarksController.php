@@ -42,7 +42,11 @@ class BookmarksController extends AppController
             'contain' => ['Users', 'Tags']
         ]);
 
-        $this->set('bookmark', $bookmark);
+        $test = TableRegistry::get('Bookmark');
+
+        $test = TableRegistry::get('Bookmarkdetails');
+        $bookmarkdetails = $test->find()->select(['id','content','created','modified'])->where(["bookmark_id=".$bookmark->id]);
+        $this->set(['bookmark'=>$bookmark,'bookmarkdetails'=>$bookmarkdetails]);
     }
 
     /**
@@ -116,14 +120,17 @@ class BookmarksController extends AppController
 
     public function tagged()
     {
-        //getting all passed parameters
+        //get the array. For example: /bookmarks/tagged/Tutorial/Mobiles Games => $tags= ['Tutorial','Mobile Game']
         $tags = $this->request->params['pass'];
+        //The same as above
+        $path = func_get_args();
+
         //Find the tagged bookmarks
         $bookmarks = $this->Bookmarks->findTagged(['tags'=>$tags]);
+
         //$bookmarks = $this->Bookmarks->query('Select * from bookmarks');
         //$test = TableRegistry::get('Bookmarks');
        // $bookmarks = $test->find()->select(['id','title','url'])->from(['Tags','Bookmarks','Bookmarks_Tags'])->where(["Tags.title='".$tags[0]."'"]);
-        $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags]);
-        
+        $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags,'path'=>$path,'title_for_layout'=>$title_for_layout]);
     }
 }

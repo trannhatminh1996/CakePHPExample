@@ -76,4 +76,32 @@
         </table>
         <?php endif; ?>
     </div>
+
+    <div class="related">
+        <h4><?= __('Related Details') ?></h4>
+        <?php if (!empty($bookmarkdetails)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('Id') ?></th>
+                <th scope="col"><?= __('Content') ?></th>
+                <th scope="col"><?= __('Created') ?></th>
+                <th scope="col"><?= __('Modified') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($bookmarkdetails as $bookmarkdetail): ?>
+            <tr>
+                <td><?= h($bookmarkdetail->id) ?></td>
+                <td><?= h($bookmarkdetail->content) ?></td>
+                <td><?= h($bookmarkdetail->created) ?></td>
+                <td><?= h($bookmarkdetail->modified) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Bookmarkdetails', 'action' => 'view', $bookmarkdetail->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Bookmarkdetails', 'action' => 'edit', $bookmarkdetail->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Bookmarkdetails', 'action' => 'delete', $bookmarkdetail->id], ['confirm' => __('Are you sure you want to delete # {0}?', $bookmarkdetail->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>

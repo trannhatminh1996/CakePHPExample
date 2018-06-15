@@ -51,6 +51,9 @@ class BookmarksTable extends Table
             'targetForeignKey' => 'tag_id',
             'joinTable' => 'bookmarks_tags'
         ]);
+
+        $this->hasMany('Bookmarkdetails',['foreignKey'=>'bookmark_id']);
+
     }
 
     /**
@@ -94,13 +97,15 @@ class BookmarksTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-
+        
         return $rules;
     }
-
+    
     public function findTagged($options){
         return $this->find()
+            //to prevent duplicate
             ->distinct(['Bookmarks.id'])
+            //match tags table with bookmarks table where tags match with tags given
             ->matching('Tags',function($q) use ($options){
                 return $q->where(['Tags.title IN'=>$options['tags']]);
         });
