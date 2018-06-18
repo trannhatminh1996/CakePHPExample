@@ -102,13 +102,26 @@ class BookmarksTable extends Table
     }
     
     public function findTagged($options){
-        return $this->find()
+        $bookmark1= $this->find()
             //to prevent duplicate
             ->distinct(['Bookmarks.id'])
             //match tags table with bookmarks table where tags match with tags given
             ->matching('Tags',function($q) use ($options){
                 return $q->where(['Tags.title IN'=>$options['tags']]);
-        });
+            });
+
+        return $bookmark1;
         
+    }
+
+    public function checkContainOfTwoArrays($array1, $array2)
+    {
+        $isContain= true;
+        foreach ($array2 as $subarray2)
+        {
+            if (!in_array($subarray2,$array1))
+                $isContain = false;
+        }
+        return $isContain;
     }
 }

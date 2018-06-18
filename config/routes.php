@@ -80,4 +80,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 //bookmarks/tags/anything
 Router::scope('/bookmarks',['controller'=>'Bookmarks'],function(RouteBuilder $routes){
     $routes->connect('tagged/*',['action'=>'tagged']);
+    $routes->connect('/search',['action'=>'search']);
+    $routes->connect('/find',['action'=>'find']);
+    
 });
