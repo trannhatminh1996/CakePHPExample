@@ -126,31 +126,12 @@ class BookmarksController extends AppController
         $path = func_get_args();
 
         //Find the tagged bookmarks
-        //$bookmarks = $this->Bookmarks->findTagged(['tags'=>$tags]);
+        $bookmarks = $this->Bookmarks->findTagged(['tags'=>$tags]);
 
         //$bookmarks = $this->Bookmarks->query('Select * from bookmarks');
         //$test = TableRegistry::get('Bookmarks');
         //$bookmarks = $test->find()->select(['id','title','url'])->from(['Tags','Bookmarks','Bookmarks_Tags'])->where(["Tags.title IN ('".$tags[0]."')and Tags.id=Bookmarks_Tags.tag_id and Bookmarks_Tags.bookmark_id=Bookmarks.id"]);
-        $bookmarktable = TableRegistry::get('Bookmarks');
-        $bookmarks= $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails')));
-        $idarray = [];
-        $passtag = [];
-        foreach ($tags as $tag)
-                array_push($passtag,$tag);
-        foreach ($bookmarks as $bookmark){
-            $checktag = [];
-            foreach($bookmark->tags as $tag)
-                array_push($checktag,$tag->title);
-            if ($this->Bookmarks->checkContainOfTwoArrays($checktag,$passtag))
-                array_push($idarray,$bookmark->id);
-        }
-        if (!empty($idarray))
-        {
-            $bookmarks = $bookmarktable->find('all')->where(['id IN'=>$idarray]);
-        }
-        else 
-            $bookmarks =null;
-        $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags,'path'=>$path,'idarray'=>$idarray]);
+        $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags,'path'=>$path]);
     }
 
     public function search()
