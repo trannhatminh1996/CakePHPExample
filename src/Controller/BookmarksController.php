@@ -22,7 +22,8 @@ class BookmarksController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users']
+            'contain' => ['Users'],
+            'limit'=>10
         ];
         $bookmarks = $this->paginate($this->Bookmarks);
 
@@ -117,7 +118,6 @@ class BookmarksController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
     public function tagged()
     {
         //get the array. For example: /bookmarks/tagged/Tutorial/Mobiles Games => $tags= ['Tutorial','Mobile Game']
@@ -159,6 +159,7 @@ class BookmarksController extends AppController
         
         $idarray = [];
         $currentTag = [];
+        $bookmarkcount=-1;
 
         if ($this->request->is('post'))
         {
@@ -172,24 +173,28 @@ class BookmarksController extends AppController
                 $a = $this->request->getData('Title'.$i);
                 array_push($currentTag,$a);
             }
-        }
-        foreach ($bookmarks as $bookmark){
-            $checktag = [];
-            foreach($bookmark->tags as $tag)
-                array_push($checktag,$tag->title);
-            if ($this->Bookmarks->checkContainOfTwoArrays($checktag,$currentTag))
-                array_push($idarray,$bookmark->id);
+            foreach ($bookmarks as $bookmark){
+                $checktag = [];
+                foreach($bookmark->tags as $tag)
+                    array_push($checktag,$tag->title);
+                if ($this->Bookmarks->checkContainOfTwoArrays($checktag,$currentTag))
+                    array_push($idarray,$bookmark->id);
+            }
+    
+            if (!empty($idarray))
+            {
+                $bookmarks = $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails','Users')))->where(['Bookmarks.id IN'=>$idarray]);
+                $bookmarkcount = $bookmarks->count();
+                $this->Flash->success(__('Search completed. '.$bookmarkcount.' bookmark(s) are found'));
+            }
+            else 
+            {
+                $bookmarks =null;
+                $bookmarkcount =0;
+                $this->Flash->success(__('Search completed but nothing is found'));
+            }
         }
 
-        if (!empty($idarray))
-        {
-            $bookmarks = $bookmarktable->find('all')->where(['id IN'=>$idarray]);
-        }
-        else 
-            $bookmarks =null;
-
-        $bookmarkcount = $bookmarks->count();
-        
         $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags,'bookmarkcount'=>$bookmarkcount]);
     }
 }

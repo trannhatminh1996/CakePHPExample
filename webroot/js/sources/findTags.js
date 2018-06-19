@@ -40,3 +40,37 @@ $(':button').click(function(){
         $('#submit_button').attr('value','Find All');
     }
 });
+
+
+$('#list').change(function(){
+    var list_value = $('#list').val();
+    for (i=0;i<$('.sorting').length;i++)
+    {
+        for (j=i+1;j<$('.sorting').length;j++)
+            swap($('.sorting:eq('+i+')'),$('.sorting:eq('+j+')'),list_value);
+    }
+});
+
+function swap(a,b,attribute){
+    if (attribute=='id')
+    {
+        vara=parseInt(a.attr(attribute));
+        varb = parseInt(b.attr(attribute));
+    }
+    else if (attribute=='title')
+    {
+        vara = a.attr(attribute);
+        varb = b.attr(attribute);
+    }
+    else 
+    {
+        vara = Date.parse(a.attr(attribute));
+        varb = Date.parse(b.attr(attribute));
+    }
+    if (vara>varb){
+        clonea = a.clone();
+        cloneb = b.clone();
+        a.replaceWith(cloneb);
+        b.replaceWith(clonea);
+    }
+}

@@ -38,6 +38,10 @@
             <th scope="row"><?= __('Modified') ?></th>
             <td><?= h($user->modified) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Name') ?></th>
+            <td><?= h($user->name) ?></td>
+        </tr>
     </table>
     <div class="related">
         <h4><?= __('Related Bookmarks') ?></h4>

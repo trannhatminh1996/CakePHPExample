@@ -12,18 +12,71 @@
     echo $this->Form->end();
 
 ?>
-<?php if ($bookmarks!=null):?>
 
-<h2><?=h($bookmarkcount)?> Bookmarks Found:</h2>
-<?php
-    foreach ($bookmarks as $bookmark)
-    {?>
-        <h4><?= $this->Html->link($bookmark->title,$bookmark->url)  ?></h4>
-        
-<?php
-    }
-?>
-<?php else:?>
+<?php if ($bookmarkcount>0):?>
+
+<h4>SORT BY:</h4>
+<select id="list">
+    <option value="id">Id</option>
+    <option value="title">Title</option>
+    <option value="daycreated">Day Created</option>
+    <option value="daymodified">Day Modified</option>
+</select>
+
+<div class="bookmarks index large-9 medium-8 columns content">
+    <table cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Web</th>
+                <th scope="col">By User</th>
+                <th scope="col">Created</th>
+                <th scope="col">Modified</th>
+                <th scope="col">Tag Related</th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($bookmarks as $bookmark): ?>
+            <tr class="sorting" id="<?=$bookmark->id?>" title ="<?=$bookmark->title?>" daycreated="<?=$bookmark->created?>" daymodified="<?=$bookmark->modified?>">
+                <td><?= $this->Number->format($bookmark->id) ?></td>
+                <td><?= h($bookmark->title) ?></td>
+                <td><?= $this->Html->link($bookmark->url,$bookmark->url)?></td>
+                <td><?= $this->Html->link($bookmark->user->name,['controller'=>"Users",'action'=>'view',$bookmark->user->id])?></td>
+                <td><?= h($bookmark->created) ?></td>
+                <td><?= h($bookmark->modified) ?></td>
+                <td><?php foreach ($bookmark->tags as $tag):?>
+                    <?php
+                        $len = count($bookmark->tags);
+                        if ($len>0):
+                    ?>
+                    <?=$this->Html->link($tag->title,['controller'=> 'Tags','action'=>'view',$tag->id])?>
+                    <?php
+                        if ($len>1):
+                    ?>
+                        <?php if ($tag==$bookmark->tags[$len-2]):?>
+                    and
+                        <?php elseif ($tag==$bookmark->tags[$len-1]):?>
+                    
+                        <?php else: ?>
+                    ,
+                    <?php endif?>
+                    <?php endif?>
+                    <?php endif?>
+                    <?php endforeach?>
+                    </td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $bookmark->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $bookmark->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $bookmark->id], ['confirm' => __('Are you sure you want to delete # {0}?', $bookmark->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+</div>
+<?php elseif ($bookmarkcount==0):?>
     <h4>Not found any bookmarks:</h4>
 <?php endif ?>
 

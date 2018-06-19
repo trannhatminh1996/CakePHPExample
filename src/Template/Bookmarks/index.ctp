@@ -12,6 +12,8 @@
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Tags'), ['controller' => 'Tags', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Tag'), ['controller' => 'Tags', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Search'), ['controller' => 'Bookmarks', 'action' => 'search']) ?></li>
+        <li><?= $this->Html->link(__('Find with Tags'), ['controller' => 'Bookmarks', 'action' => 'find']) ?></li>
     </ul>
 </nav>
 <div class="bookmarks index large-9 medium-8 columns content">

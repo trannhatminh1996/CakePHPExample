@@ -32,7 +32,8 @@ class User extends Entity
         'password' => true,
         'created' => true,
         'modified' => true,
-        'bookmarks' => true
+        'bookmarks' => true,
+        'name' => true
     ];
 
     /**
