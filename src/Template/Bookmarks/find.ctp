@@ -23,6 +23,11 @@
     <option value="daymodified">Day Modified</option>
 </select>
 
+<input class= "sort" type="checkbox" value="id" checked disabled/>Id
+<input class= "sort" type="checkbox" value="title"/>Title
+<input class= "sort" type="checkbox" value= "daycreated"/> Day Created
+<input class= "sort" type="checkbox" value= "daymodified"/> Day Modified
+
 <div class="bookmarks index large-9 medium-8 columns content">
     <table cellpadding="0" cellspacing="0">
         <thead>

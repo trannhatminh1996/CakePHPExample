@@ -155,7 +155,7 @@ class BookmarksController extends AppController
         $tags = $tagstable->find('all',array('contain'=>array('Bookmarks')));
 
         $bookmarktable = TableRegistry::get('Bookmarks');
-        $bookmarks= $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails')));
+        $bookmarks= $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails','Users')));
         
         $idarray = [];
         $currentTag = [];

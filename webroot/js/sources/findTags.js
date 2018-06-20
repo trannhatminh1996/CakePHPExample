@@ -41,9 +41,44 @@ $(':button').click(function(){
     }
 });
 
-
+/*
+$(':button').click(function(){
+    thisurl = '/bookmarks/tagged'
+    button = $(':button')
+    for (i =0;i <button.length;i++)
+    {
+        if ($(":button:eq("+i+")").css('background-color')!="rgb(221, 221, 221)"){
+            thisurl +='/'+ $(":button:eq("+i+")").val();
+        }
+    }
+    $.ajax({
+        url: thisurl,
+        success:function(data){
+            $('#content').html(data);
+        }
+    });
+});
+*/
 $('#list').change(function(){
     var list_value = $('#list').val();
+    for (i=0;i<$('.sorting').length;i++)
+    {
+        for (j=i+1;j<$('.sorting').length;j++)
+            swap($('.sorting:eq('+i+')'),$('.sorting:eq('+j+')'),list_value);
+    }
+});
+$('.sort').change(function(){
+    for (i=0;i<$('.sort').length;i++)
+    {
+        if($(this).val()!=$('.sort:eq('+i+')').val())
+        {
+            $('.sort:eq('+i+')').prop('checked',false);
+            $('.sort:eq('+i+')').attr('disabled',false);
+        }
+    }
+    $(this).attr('disabled',true);
+
+    var list_value = $(this).val();
     for (i=0;i<$('.sorting').length;i++)
     {
         for (j=i+1;j<$('.sorting').length;j++)
