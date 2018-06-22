@@ -85,6 +85,7 @@
     <h4>Not found any bookmarks:</h4>
 <?php endif ?>
 
+
 <script src="/js/jquery.js"></script>
 <script src="/js/sources/findTags.js"></script>
-
+<script src="/js/jquery-ui.js"></script>

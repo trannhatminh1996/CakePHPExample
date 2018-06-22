@@ -59,6 +59,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    $routes->connect('/scrollingtest',['controller'=>'Scrolling','action'=>'display']);
+    $routes->connect('/randombookmarks',['controller'=>'Bookmarks','action'=>'randomdisplay','pass'=>array('startingpoint')]);
     /**
      * Connect catchall routes for all controllers.
      *

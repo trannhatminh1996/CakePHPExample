@@ -197,4 +197,13 @@ class BookmarksController extends AppController
 
         $this->set(['bookmarks'=>$bookmarks,'tags'=>$tags,'bookmarkcount'=>$bookmarkcount]);
     }
+
+    public function randomdisplay()
+    {
+        $startingpoint = $this->request->param('pass')[0];
+        $limit = $this->request->param('pass')[1];
+        $bookmarktable = TableRegistry::get('Bookmarks');
+        $bookmarks = $bookmarktable->find('all',array('limit'=>$limit))->order(['id'=>'ASC'])->where('id>'.$startingpoint);
+        $this->set(compact('bookmarks','startingpoint','limit'));
+    }
 }

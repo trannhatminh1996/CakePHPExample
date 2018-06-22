@@ -109,3 +109,11 @@ function swap(a,b,attribute){
         b.replaceWith(clonea);
     }
 }
+
+$(window).on("scroll", function() {
+	var scrollHeight = $(document).height();
+	var scrollPosition = $(window).height() + $(window).scrollTop();
+	if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	    alert("Done");
+	}
+});
