@@ -206,4 +206,20 @@ class BookmarksController extends AppController
         $bookmarks = $bookmarktable->find('all',array('limit'=>$limit))->order(['id'=>'ASC'])->where('id>'.$startingpoint);
         $this->set(compact('bookmarks','startingpoint','limit'));
     }
+
+    public function autosave()
+    {
+        $inputcomment = $this->request->params['pass'][0];
+        $bookmarkid = $this->request->params['pass'][1];
+        $parentcomment = $this->request->params['pass'][2];
+        $commenttable = TableRegistry::get('Comments');
+        $comment = $commenttable->newEntity();
+        $comment->user_id = $this->Auth->user('id');
+        $comment->content = $inputcomment;
+        $comment->bookmark_id= $bookmarkid;
+        $comment->parentcomment = $parentcomment;
+        $commenttable->save($comment);
+        $id = $comment->id;
+        $this->set(compact('id'));
+    }
 }

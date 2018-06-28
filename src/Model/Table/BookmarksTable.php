@@ -51,6 +51,9 @@ class BookmarksTable extends Table
             'targetForeignKey' => 'tag_id',
             'joinTable' => 'bookmarks_tags'
         ]);
+        $this->hasMany('Comments', [
+            'foreignKey' => 'bookmark_id'
+        ]);
 
         $this->hasMany('Bookmarkdetails',['foreignKey'=>'bookmark_id']);
 

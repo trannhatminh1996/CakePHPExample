@@ -61,6 +61,10 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/scrollingtest',['controller'=>'Scrolling','action'=>'display']);
     $routes->connect('/randombookmarks',['controller'=>'Bookmarks','action'=>'randomdisplay','pass'=>array('startingpoint')]);
+
+    $routes->connect('commentonbookmark/*',['controller'=>'Comments','action'=>'commentonbookmark']);
+
+    $routes->connect('autosavebookmark/*',['controller'=>'Bookmarks','action'=>'autosave']);
     /**
      * Connect catchall routes for all controllers.
      *
