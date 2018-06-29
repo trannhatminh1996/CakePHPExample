@@ -13,8 +13,13 @@ $(document).ready(function(){
         if ($(this).next().attr('class')!='form')
         {
             $('.form').remove();
+            savedocumentHeight=$(document).height();
             $(this).after('<form method="post" accept-charset="utf-8" class="form" action="'+pathname+'"><div style="display:none;"><input type="hidden" name="_method" value="POST"></div> <textarea class="commenttext" type="textarea" rows="2" name="inputcomment" placeholder="Write a comment..." id='+0+'" style="width:500px;margin-left:0px;"/><input type="text" name="parentcomment" value="0" style="display:none;"/><input type="text" name="bookmarkid" value="'+$(this).attr('bookmarkid')+'" style="display:none;"/><div class="submit"><input type="submit" id="submit_button" value="Submit" style="margin-left:0px;" ></div></form> ');
             checkform($(this).next(),$(this),'head');
+           
+            if (($(this).offset().top - $(window).scrollTop())/$(window).height()>=0.9){
+                testingscroll($(document).height()-savedocumentHeight);
+            }
         }
         else 
         {
@@ -46,9 +51,11 @@ $(document).ready(function(){
                     focusform.remove();
                     $.ajax({
                         url: '/autosavebookmark/'+inputcomment+'/'+bookmarkid+'/'+ parentcomment,
+                        type: 'POST',
+                        data: {passinputcomment:inputcomment,passbookmarkid:bookmarkid,passparentcomment:parentcomment},
                         success:function(data){
                             getid = parseInt(data);
-                            focush2.parent().find('div').last().append('<h2 style="margin-left:'+margin_left+'px;" bookmark="'+focush2.attr("bookmark")+'" id="'+getid+'">'+inputcomment+'</h2>')
+                            focush2.parent().find('div').last().append('<h2 style="margin-left:'+margin_left+'px;" bookmark="'+focush2.attr("bookmark")+'" id="'+getid+'">'+inputcomment+'<span style="display:inline-block;font-size:35%"> by '+$('#name').text()+'</span></h2>')
                             focush2.parent().find('div').last().find('h2').append('<input style="width:25px;height:25px;"type="button" value="Reply" class="reply_button" id="'+focush2.parent().find('div').last().find('h2').attr('id')+'"/>');
                             button=focush2.parent().find('div').last().find('h2').last().find('input[type="button"]');
                             clickReplyButton(button);
@@ -90,9 +97,11 @@ $(document).ready(function(){
                     focusform.remove();
                     $.ajax({
                         url: '/autosavebookmark/'+inputcomment+'/'+bookmarkid+'/'+ parentcomment,
+                        type: 'POST',
+                        data: {passinputcomment:inputcomment,passbookmarkid:bookmarkid,passparentcomment:parentcomment},
                         success:function(data){
                             getid = parseInt(data);
-                            focush2.parent().find('div').last().append('<h2 style="margin-left:0px;" id="'+getid+'" bookmark="'+focush2.attr('bookmarkid')+'">'+inputcomment+'</h2>')
+                            focush2.parent().find('div').last().append('<h2 style="margin-left:0px;" id="'+getid+'" bookmark="'+focush2.attr('bookmarkid')+'">'+inputcomment+'<span style="display:inline-block;font-size:35%"> by '+$('#name').text()+'</div></h2>')
                             focush2.parent().find('div').last().find('h2').append('<input style="width:25px;height:25px;"type="button" value="Reply" class="reply_button" id="'+focush2.parent().find('div').last().find('h2').attr('id')+'"/>')
                             button=focush2.parent().find('div').last().find('h2').last().find('input[type="button"]');
                             clickReplyButton(button);
@@ -139,7 +148,6 @@ $(document).ready(function(){
                 button = $(this);
                 $('div [class='+id+']').show(300,function(){
                     button.attr('value','Hide');
-                    $('#test').text(button.offset().top - $(window).scrollTop() + ' '+ $(window).height());
                     if ((button.offset().top - $(window).scrollTop())/$(window).height()>=0.9){
                         testingscroll($(document).height()-savedocumentHeight);
                     }
@@ -170,10 +178,15 @@ $(document).ready(function(){
             check = $('h2[id='+id+']').next();
             if (check.attr('class')!='form')
             {
-
                 $('.form').remove();
+                savedocumentHeight=$(document).height();
                 $('h2[id='+id+']').after('<form method="post" accept-charset="utf-8" class="form" action="'+pathname+'"><div style="display:none;"><input type="hidden" name="_method" value="POST"></div> <textarea class="commenttext" type="textarea" rows="2" name="inputcomment" placeholder="Write a comment..." id='+id+'" style="width:500px;margin-left:'+margin_left+'px;"/><input type="text" name="parentcomment" value="'+$('h2[id='+id+']').attr('id')+'" style="display:none;"/><input type="text" name="bookmarkid" value="'+$('h2[id='+id+']').attr('bookmark')+'" style="display:none;"/><div class="submit"><input type="submit" id="submit_button" value="Submit" style="margin-left:'+margin_left+'px;" ></div></form> ');
-                checkform($('h2[id='+id+']').next(),$('h2[id='+id+']'),'normal')
+                checkform($('h2[id='+id+']').next(),$('h2[id='+id+']'),'normal');
+
+                if (($(this).offset().top - $(window).scrollTop())/$(window).height()>=0.9){
+                    testingscroll($(document).height()-savedocumentHeight);
+                }
+                
             }
             else 
                 $(check).remove();
@@ -195,14 +208,18 @@ $(document).ready(function(){
         {
             if (focush2.has('text').length==0)
             {
+                //create the text to show the children
                 focush2.append('<text id="children" count="'+count+'"style="font-size:50%;">'+count+'chilrens </text>');
             }
             else 
             {
+                //show no of children if there exists one
                 focush2.has('text[id="chilren"]').text(count+' childrens');
             }
         }
     
     }
 });
+
+
 

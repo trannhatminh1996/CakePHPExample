@@ -1,4 +1,4 @@
-
+<div id="name" style="display:none;"><?=h($name)?></div>
 <?php
     function commentcount($focuscomment,$commentlist,$margin_left)
     {
@@ -14,7 +14,7 @@
             
 ?>
             <div class="<?=h($focuscomment->id)?>" style="overflow: hidden; display: none;">
-            <h2 style="margin-left:<?=h($margin_left)?>px;" id="<?=h($b->id)?>" bookmark="<?=h($b->bookmark_id)?>"><?php echo nl2br($b->content);?></h2>
+            <h2 style="margin-left:<?=h($margin_left)?>px;" id="<?=h($b->id)?>" bookmark="<?=h($b->bookmark_id)?>"><?php echo nl2br($b->content).'<span style="display:inline-block;font-size:35%;"> by '.$b->user->name.'</span>';?></h2>
 <?php
             commentcount($b,$commentlist,$margin_left+50);
 ?>
@@ -23,8 +23,6 @@
         }
     }
 ?>
-<span id="test"></span>
-
 <?php foreach ($bookmarks as $bookmark):?>
     <div id= 'bookmark<?=$bookmark->id?>'>
     <p id="bookmark"><?= h($bookmark->title)?></p>
@@ -32,7 +30,7 @@
     <?php foreach  ($bookmark->comments as $comment):?>
         <?php if ($comment->parentcomment==0):?>
         <div class="0">
-           <h2 style="margin-left:0px;" id="<?=h($comment->id)?>" bookmark="<?=h($comment->bookmark_id)?>"><?php echo nl2br($comment->content);?></h2>
+           <h2 style="margin-left:0px;" id="<?=h($comment->id)?>" bookmark="<?=h($comment->bookmark_id)?>"><?php echo nl2br($comment->content).'<span style="display:inline-block;font-size:35%;"> by '.$comment->user->name.'</span>';?></h2>
             <?php commentcount($comment,$comments,50)?>
         </div>
         <?php endif ?>

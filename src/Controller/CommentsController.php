@@ -119,24 +119,11 @@ class CommentsController extends AppController
     {
         $params = $this->request->params['pass'];
         $bookmarktable = TableRegistry::get('Bookmarks');
-        $bookmarks = $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails','Users','Comments')))->where(['Bookmarks.id IN'=>$params]);
-        $commenttable = tableRegistry::get('Comments');
-        $comments = $commenttable->find('all',array('contain'=>array('Bookmarks')));
-        if ($this->request->is('post'))
-        {
-            if ($this->request->getData())
-            {
-                $comment = $this->Comments->newEntity();
-                $comment->user_id = $this->Auth->user('id');
-                $comment->content = $this->request->getData('inputcomment');
-                $comment->bookmark_id= $this->request->getData('bookmarkid');
-                $comment->parentcomment = $this->request->getData('parentcomment');
-                $this->Comments->save($comment);
-                return $this->redirect($this->here);
-
-            }
-        }
-        $this->set(compact('bookmarks','comments','comment'));
+        $bookmarks = $bookmarktable->find('all',array('contain'=>array('Tags','Bookmarkdetails','Users','Comments'=>array('Users'))))->where(['Bookmarks.id IN'=>$params]);
+        $commenttable = TableRegistry::get('Comments');
+        $comments = $commenttable->find('all',array('contain'=>array('Bookmarks','Users')));
+        $name = $this->Auth->user('name');
+        $this->set(compact('bookmarks','comments','comment','name'));
     }
     
 }

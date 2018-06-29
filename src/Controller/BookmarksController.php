@@ -200,26 +200,43 @@ class BookmarksController extends AppController
 
     public function randomdisplay()
     {
+        $link_referer = $this->referer();
+        if ($link_referer!='http://localhost:1000/scrollingtest')
+        {
+            $this->redirect('/');
+            $this->Flash->success(__("Can't access"));
+        }
         $startingpoint = $this->request->param('pass')[0];
         $limit = $this->request->param('pass')[1];
         $bookmarktable = TableRegistry::get('Bookmarks');
         $bookmarks = $bookmarktable->find('all',array('limit'=>$limit))->order(['id'=>'ASC'])->where('id>'.$startingpoint);
-        $this->set(compact('bookmarks','startingpoint','limit'));
+        $this->set(compact('bookmarks','startingpoint','limit','link_referer'));
     }
 
     public function autosave()
     {
-        $inputcomment = $this->request->params['pass'][0];
-        $bookmarkid = $this->request->params['pass'][1];
-        $parentcomment = $this->request->params['pass'][2];
-        $commenttable = TableRegistry::get('Comments');
-        $comment = $commenttable->newEntity();
-        $comment->user_id = $this->Auth->user('id');
-        $comment->content = $inputcomment;
-        $comment->bookmark_id= $bookmarkid;
-        $comment->parentcomment = $parentcomment;
-        $commenttable->save($comment);
-        $id = $comment->id;
-        $this->set(compact('id'));
+        if (!$this->request->is('ajax'))
+        {
+            $this->redirect('/comments');
+        }
+        else 
+        {
+            if ($this->request->is('post'))
+            {
+                //$inputcomment = $this->request->params['pass'][0];
+                //$bookmarkid = $this->request->params['pass'][1];
+                //$parentcomment = $this->request->params['pass'][2];
+                $commenttable = TableRegistry::get('Comments');
+                $comment = $commenttable->newEntity();
+                $comment->user_id = $this->Auth->user('id');
+                $comment->content = $this->request->data('passinputcomment');
+                $comment->bookmark_id= $this->request->data('passbookmarkid');
+                $comment->parentcomment = $this->request->data('passparentcomment');
+                $commenttable->save($comment);
+
+                $id = $comment->id;
+                $this->set(compact('id'));
+            }
+        }
     }
 }

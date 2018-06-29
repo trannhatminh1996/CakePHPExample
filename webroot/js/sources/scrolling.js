@@ -7,6 +7,7 @@ function displaymore(a,b){
         success:function(data){
             $('#content').append(data);
             $('#text').hide();
+            
         }
     });
 }
